@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+  @auth
   <h1>Edit Post</h1>
   {!! Form::open(['action' => ['PostsController@update', $post->id], 'method' => 'POST']) !!}
       <div class="form-group">
@@ -16,5 +17,5 @@
       {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
       <a href="/home" class="btn btn-secondary">Cancel</a>
   {!! Form::close() !!}
-
+  @endauth
 @endsection

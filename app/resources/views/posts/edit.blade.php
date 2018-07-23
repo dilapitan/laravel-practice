@@ -14,7 +14,7 @@
 
       {{ Form::hidden('_method', 'PUT') }}
       {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
-      <a href="/posts" class="btn btn-secondary">Cancel</a>
+      <a href="/home" class="btn btn-secondary">Cancel</a>
   {!! Form::close() !!}
 
 @endsection

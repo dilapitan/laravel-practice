@@ -55,8 +55,30 @@ class PostsController extends Controller
         // form validation
         $this->validate($request, [
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'cover_image' => 'image | nullable | max: 1999'
         ]);
+
+        // handle file upload
+        if ($request->hasFile('cover_image')) {
+            
+            // get file name with extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+            // get just file name
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            // get extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            // file name to store
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            
+            // upoad the image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $filenameToStore);
+        } else {
+            $fileNameToStore = 'noimage.jpg'; // if user did not upload an image
+        }
 
         // creating post
         $post = new Post;
@@ -65,7 +87,7 @@ class PostsController extends Controller
 
         // request are only for form
         $post->user_id = auth()->user()->id;
-        
+        $post->cover_image = $filenameToStore;
         $post->save();
 
         // redirecting to a page after post creation
@@ -118,10 +140,34 @@ class PostsController extends Controller
             'body' => 'required'
         ]);
 
+        // handle file upload
+        if ($request->hasFile('cover_image')) {
+            
+            // get file name with extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+            // get just file name
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            // get extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            // file name to store
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            
+            // upoad the image
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $filenameToStore);
+        }
+
         // creating post
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
+
+        if ($request->hasFile('cover_image')) {
+           $post->cover_image = $filenameToStore; 
+        }
+
         $post->save();
 
         // redirecting to a page after post creation

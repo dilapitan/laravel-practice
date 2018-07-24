@@ -6,6 +6,8 @@
   <br><br>
 
   <h1>{{ $post->title }}</h1>
+  <img src="/storage/cover_images/{{$post->cover_image}}" style="width: 100%; height: auto;">
+  <br><br>
   <div>
     {!! $post->body !!}
   </div>
